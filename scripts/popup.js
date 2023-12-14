@@ -3,7 +3,8 @@ let afficherPopup = document.getElementById("afficherPopup")
 let overlay = document.getElementById("overlay")
 let fermerPopup = document.getElementById("fermerPopup")
 let input = document.getElementById("inputAgrandi")
-let btnGO = document.getElementById("boutonGO")
+let overlayFavoris = document.getElementById("overlayFavoris")
+let popup_container = document.getElementById("popup_container")
 
 
 
@@ -24,6 +25,8 @@ fermerPopup.addEventListener("click", () => {
 
 function hideOverlay() {
     overlay.style.display = "none";
+    overlayFavoris.style.display = "none"
+    popup_container.style.visibility = "visible"
 }
 
 

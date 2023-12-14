@@ -288,8 +288,7 @@ btnPopupFavoris.addEventListener("click",()=>{
 })
     
 fermerFavoris.addEventListener("click",()=>{
-    overlayFavoris.style.display = "none"
-    popup_container.style.visibility = "visible"   
+    hideOverlay();
 })
 
 let divFavoris = document.createElement("div")
@@ -342,6 +341,7 @@ starToggle.addEventListener("click", () => {
     //Ecouteur d'événements pour déclencher une recherche sur la ville correspodnante au clic sur la ville correspondante
     divFav.addEventListener("click", async () => {
         await attributionDonnesAPI(divFav.textContent)
+        hideOverlay();
     })
 })
 
