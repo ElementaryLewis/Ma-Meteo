@@ -180,8 +180,8 @@ async function usePos() {
         const userLocation = `${latitude},${longitude}`
 
         // Appel de l'API avec les donnes de géolocalisation
-        const response = await getResponse(userLocation)
-        const astro = await getAstro(userLocation)
+        let response = await getResponse(userLocation)
+        let astro = await getAstro(userLocation)
         console.log(response, astro)
 
         //Attirubution des valeurs aux différents éléments de la page
@@ -258,6 +258,8 @@ async function usePos() {
         weatherIconLittleNightTomorrow.src = response.forecast.forecastday[1].hour[23].condition.icon
         weather_night_demain.textContent = response.forecast.forecastday[1].hour[23].condition.text
         temperature_short_demain_night.textContent = response.forecast.forecastday[1].hour[23].temp_c
+        
+        backgroundUpdate(response);
 
         //Création de la carte
         let map = L.map('map').setView([latitude, longitude], 13);
@@ -268,11 +270,11 @@ async function usePos() {
 
         L.marker([latitude, longitude]).addTo(map)
             .bindPopup('Vous êtes ici')
+            
 
     } catch (error) {
         console.error(error);
     }
-    backgroundUpdate(response);
 }
 
 //Gestion des favoris
@@ -348,8 +350,16 @@ starToggle.addEventListener("click", () => {
 //Appel de la fonction usepos
 usePos();
 
+//Ecouteur d'événements pour déclencher une recherche sur la ville correspodnante au clic sur la ville géolocalisé
+currentPosition.addEventListener("click", async () => {
+    await attributionDonnesAPI(currentPosition.textContent.slice(12))
+    hideOverlay();
+    console.log(currentPosition.textContent.slice(14));
+})
+
 //recuperation de la reponse
 bouton2.addEventListener("click", () => {
+    starToggle.src = "../img/star_empty.png"
     attributionDonnesAPI(inputAgrandi.value)
     hideOverlay();
 })
