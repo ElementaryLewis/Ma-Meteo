@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  -
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"
+    integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="./scripts/api.js" defer></script>
+  <script type="module" src="./scripts/background.js" defer></script>
+  <script type="module" src="./scripts/main.js" defer></script>
+  <script type="module" src="./scripts/popup.js" defer></script>
+  <script type="module" src="./scripts/position.js" defer></script>
+  <link rel="stylesheet" href="./styles/styles.css" />
+  <!--Lien css pour Leaflet (la carte)-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!--Lien JS pour Leaflet (la carte)-->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <title>API Météo</title>
+</head>
+
+<body>
+  <div class="header">
+    <p>Menu</p>
+    <p id="btnPopupFavoris" class="btnPopupFavoris"><img src="./img/star.png" class="star-menu" /></p>
+  </div>
+  <div class="overlayFavoris" id="overlayFavoris">
+      <button id="fermerFavoris" class="fermerFavoris fermerPopup">Fermer</button>
+  </div>
+  
+  <h3 id="currentPosition"></h3>
+  <div id="popup_container">
+    <button id="afficherPopup" class="afficherPopup">Pour rechercher une ville, cliquez ici</button>
+    <div id="overlay" class="overlay">
+      <div id="popup" class="popup bordureSearch">
+        <div class="recherche">
+          <input type="search" id="inputAgrandi" class=" paddingSearch bordureNone recherche"
+            placeholder="Saisissez votre ville" />
+        </div>
+        <button class="buttonSearch bordureNone" id="boutonGO">Recherche</button>
+        <button id="fermerPopup" class="fermerPopup ">Fermer</button>
+      </div>
+    </div>
+  </div>
+  <div class="now">
+    <div class="ville"><p id="favourite_toggle">
+      <img src="./img/star_empty.png" id="star_toggle" class="star-menu"/>
+      </p>
+      <p id="ville_localisation"></p>
+    </div>
+    <div id="main_jour">
+      <div id="temps_jour">
+        <p id="icon_today">
+          <img class="iconBig" id="weatherIconBig" />
+        </p>
+        <p id="weather_today"></p>
+      </div>
+      <div id="info_jour">
+        <p id="temperature"></p>
+        <section id="mini_info">
+          <p id="wet_today"></p>
+          <p id="wind_today"></p>
+          <p id="aqi_today"></p>
+          <p id="uv_today"></p>
+        </section>
+      </div>
+    </div>
+    <div id="soleil_info">
+      <p>Levée de Soleil</p>
+      <p id="soleil_leve"></p>
+      <p>Couchée de Soleil</p>
+      <p id="soleil_couche"></p>
+    </div>
+  </div>
+  <h2>Aujourd'hui</h2>
+  <div id="today">
+    <section class="flex_little" id="morning">
+      <p id="icon_morning">
+        <img class="iconLittle" id="weatherIconLittleMorning" />
+      </p>
+      <p id="weather_morning"></p>
+      <p id="temperature_short_morning"></p>
+    </section>
+    <section class="flex_little" id="afternoon">
+      <p id="icon_afternoon">
+        <img class="iconLittle" id="weatherIconLittleAfternoon" />
+      </p>
+      <p id="weather_afternoon"></p>
+      <p id="temperature_short_afternoon"></p>
+    </section>
+    <section class="flex_little" id="evening">
+      <p id="icon_evening">
+        <img class="iconLittle" id="weatherIconLittleEvening" />
+      </p>
+      <p id="weather_evening"></p>
+      <p id="temperature_short_evening"></p>
+    </section>
+    <section class="flex_little" id="night">
+      <p id="icon_night">
+        <img class="iconLittle" id="weatherIconLittleNight" />
+      </p>
+      <p id="weather_night"></p>
+      <p id="temperature_short_night"></p>
+    </section>
+  </div>
+  <h2>Demain</h2>
+  <div id="demain">
+    <section class="flex_little" id="morning_demain">
+      <p id="icon_morning_demain">
+        <img class="iconLittle" id="weatherIconLittleMorningTomorrow" />
+      </p>
+      <p id="weather_morning_demain"></p>
+      <p id="temperature_short_demain_morning"></p>
+    </section>
+    <section class="flex_little" id="afternoon_demain">
+      <p id="icon_afternoon_demain">
+        <img class="iconLittle" id="weatherIconLittleAfternoonTomorrow" />
+      </p>
+      <p id="weather_afternoon_demain"></p>
+      <p id="temperature_short_demain_afternoon"></p>
+    </section>
+    <section class="flex_little" id="evening_demain">
+      <p id="icon_evening_demain">
+        <img class="iconLittle" id="weatherIconLittleEveningTomorrow" />
+      </p>
+      <p id="weather_everning_demain"></p>
+      <p id="temperature_short_demain_evening"></p>
+    </section>
+    <section class="flex_little" id="night_demain">
+      <p id="icon_night_demain">
+        <img class="iconLittle" id="weatherIconLittleNightTomorrow" />
+      </p>
+      <p id="weather_night_demain"></p>
+      <p id="temperature_short_demain_night"></p>
+    </section>
+  </div>
+
+  <div id="map" class="map"></div>
+</body>
+
+</html>
